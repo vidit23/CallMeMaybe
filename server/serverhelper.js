@@ -11,7 +11,7 @@ module.exports = {
             })
         })
     },
-    getUserGivenTag: function(tag) {
+    getUserByTag: function(tag) {
         return new Promise((resolve, reject) => {
             userDAO.getUserByTag(tag).then(doc => {
                 return resolve(doc);

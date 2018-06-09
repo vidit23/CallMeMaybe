@@ -83,8 +83,8 @@ router.get('/getDistinctTags', isAuthenticated, function(req,res) {
   });
 })
 
-router.get('/getUserGivenTag', isAuthenticated, function(req,res) {
-  serverHelper.getUserGivenTag(req.query.tag).then((response) => {
+router.get('/getUserByTag', isAuthenticated, function(req,res) {
+  serverHelper.getUserByTag(req.query.tag).then((response) => {
     res.status(200).send(response);
   }).catch(err => {
     console.log('Error', err);

@@ -38,7 +38,7 @@ passport.serializeUser(UsersDAO.userFunctions.serializeUser());
 passport.deserializeUser(UsersDAO.userFunctions.deserializeUser());
 
 app.get('/getUser', function(req,res) {
-  serverHelper.getUser().then((response) => {
+  serverHelper.getUser(req.query.name).then((response) => {
     res.status(200).send(response);
   }).catch(err => {
     console.log('Error', err);

@@ -2,9 +2,9 @@ const userDAO = require('../model/usersDAO');
 const tagDAO = require('../model/tagsDAO');
 
 module.exports = {
-    getUser: function() {
+    getUser: function(id) {
         return new Promise((resolve, reject) => {
-            userDAO.getUserById('5b1be82662effc0e6fa58539').then(doc => {
+            userDAO.getUserById(id).then(doc => {
                 return resolve(doc);
             }).catch(err => {
                 return reject(err);

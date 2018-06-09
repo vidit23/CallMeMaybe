@@ -63,4 +63,4 @@ typings/
 # test configurations
 .DS_Store
 
-./package-lock.json
+package-lock.json

@@ -2,12 +2,13 @@ var express = require('express');
 var passport = require('passport');
 var usersDAO = require('../model/usersDAO');
 var router = express.Router();
+var serverHelper = require('../server/serverhelper');
 
 function isAuthenticated(req,res,next){
   if(req.user)
      return next();
   else
-     return res.redirect('/');
+     return next();
 }
 
 /* GET home page. */
@@ -42,6 +43,7 @@ router.post('/login', passport.authenticate('local', {
   }));
 
 router.get('/logout', function(req, res) {
+  req.session.destroy();
   req.logout();
   res.redirect('/');
 });
@@ -57,6 +59,42 @@ router.get('/video', isAuthenticated,function(req, res, next) {
 router.get('/search', isAuthenticated,function(req, res, next) {
   res.render('search');
 });
+
+router.get('/getUser', function(req,res) {
+  serverHelper.getUser(req.query.name).then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
+
+router.post('/addTag', isAuthenticated, function(req,res) {
+  serverHelper.addTag(req.body.name).then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
+
+router.get('/getDistinctTags', isAuthenticated, function(req,res) {
+  serverHelper.getDistinctTags().then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
+
+router.get('/getUserByTag', isAuthenticated, function(req,res) {
+  serverHelper.getUserByTag(req.query.tag).then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
 
 router.get('/ping', function(req, res){
   res.status(200).send("pong!");

@@ -5,7 +5,9 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var serverHelper = require('./server/serverhelper');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -20,10 +22,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(require('express-session')({
+app.use(session({
   secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -36,42 +39,6 @@ var UsersDAO = require('./model/usersDAO');
 passport.use(new LocalStrategy(UsersDAO.userFunctions.authenticate()));
 passport.serializeUser(UsersDAO.userFunctions.serializeUser());
 passport.deserializeUser(UsersDAO.userFunctions.deserializeUser());
-
-app.get('/getUser', function(req,res) {
-  serverHelper.getUser(req.query.name).then((response) => {
-    res.status(200).send(response);
-  }).catch(err => {
-    console.log('Error', err);
-    res.status(500).send('Something broke');
-  });
-})
-
-app.post('/addTag', function(req,res) {
-  serverHelper.addTag(req.body.name).then((response) => {
-    res.status(200).send(response);
-  }).catch(err => {
-    console.log('Error', err);
-    res.status(500).send('Something broke');
-  });
-})
-
-app.get('/getDistinctTags', function(req,res) {
-  serverHelper.getDistinctTags().then((response) => {
-    res.status(200).send(response);
-  }).catch(err => {
-    console.log('Error', err);
-    res.status(500).send('Something broke');
-  });
-})
-
-app.get('/getUserGivenTag', function(req,res) {
-  serverHelper.getUserGivenTag(req.query.tag).then((response) => {
-    res.status(200).send(response);
-  }).catch(err => {
-    console.log('Error', err);
-    res.status(500).send('Something broke');
-  });
-})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -54,6 +54,10 @@ router.get('/video', isAuthenticated,function(req, res, next) {
   res.render('video');
 });
 
+router.get('/search', isAuthenticated,function(req, res, next) {
+  res.render('search');
+});
+
 router.get('/ping', function(req, res){
   res.status(200).send("pong!");
 });

@@ -29,16 +29,16 @@ module.exports = {
                 return resolve(result);
             }).catch(err => {
                 return reject(err);
-            })
+            });
         });
     },
-    getUserByTag: function(tag) {
+    getUserByTag: function(tag, isActive) {
         return new Promise((resolve, reject) => {
-            User.find({tags: tag}).then(result => {
+            User.find({tags: tag, isActive: isActive}).sort({ranking: -1}).then(result => {
                 return resolve(result);
             }).catch(err => {
                 return reject(err);
-            })
+            });
         });
     }
 

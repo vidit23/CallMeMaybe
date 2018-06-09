@@ -8,16 +8,26 @@ module.exports = {
                 return resolve(doc);
             }).catch(err => {
                 return reject(err);
-            })
+            });
         })
     },
     getUserByTag: function(tag) {
         return new Promise((resolve, reject) => {
-            userDAO.getUserByTag(tag).then(doc => {
-                return resolve(doc);
+            let userList = [];
+            userDAO.getUserByTag(tag, true).then(resultTrue => {
+                resultTrue.map(user => {
+                    userList.push(user);
+                });
+                return userDAO.getUserByTag(tag, false);
+            }).then(resultFalse => {
+                return resultFalse.map(user => {
+                    userList.push(user);
+                });
+            }).then(() => {
+                return resolve(userList);
             }).catch(err => {
                 return reject(err);
-            })
+            });
         })
     },
     getDistinctTags: function() {
@@ -26,7 +36,7 @@ module.exports = {
                 return resolve(doc);
             }).catch(err => {
                 return reject(err);
-            })
+            });
         });
     },
     addTag: function(name) {
@@ -36,7 +46,7 @@ module.exports = {
                 return resolve(doc);
             }).catch(err => {
                 return reject(err);
-            })
+            });
         });
     },
 }

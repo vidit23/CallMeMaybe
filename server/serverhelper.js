@@ -2,7 +2,7 @@ const userDAO = require('../model/usersDAO');
 const tagDAO = require('../model/tagsDAO');
 
 module.exports = {
-    getUser: function(id) {
+    getUser: function (id) {
         return new Promise((resolve, reject) => {
             userDAO.getUserById(id).then(doc => {
                 return resolve(doc);
@@ -11,7 +11,7 @@ module.exports = {
             })
         })
     },
-    getUserByTag: function(tag) {
+    getUserByTag: function (tag) {
         return new Promise((resolve, reject) => {
             userDAO.getUserByTag(tag).then(doc => {
                 return resolve(doc);
@@ -20,7 +20,7 @@ module.exports = {
             })
         })
     },
-    getDistinctTags: function() {
+    getDistinctTags: function () {
         return new Promise((resolve, reject) => {
             tagDAO.getDistinctTags().then(doc => {
                 return resolve(doc);
@@ -29,7 +29,7 @@ module.exports = {
             })
         });
     },
-    addTag: function(name) {
+    addTag: function (name) {
         return new Promise((resolve, reject) => {
             console.log('AddTag ', name);
             tagDAO.addTagByName(name).then(doc => {
@@ -39,4 +39,14 @@ module.exports = {
             })
         });
     },
+    updateUserByName: function (username, updateField, updateValue) {
+        return new Promise((resolve, reject) => {
+            console.log('Update name ', username);
+            userDAO.updateUserByName(username, updateField, updateValue).then(doc => {
+                return resolve(doc);
+            }).catch(err => {
+                return reject(err);
+            })
+        });
+    }
 }

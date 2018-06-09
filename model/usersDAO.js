@@ -31,5 +31,15 @@ module.exports = {
                 return reject(err);
             })
         });
+    },
+    getUserByTag: function(tag) {
+        return new Promise((resolve, reject) => {
+            User.find({tags: tag}).then(result => {
+                return resolve(result);
+            }).catch(err => {
+                return reject(err);
+            })
+        });
     }
+
 }

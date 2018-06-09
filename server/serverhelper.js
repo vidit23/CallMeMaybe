@@ -11,6 +11,15 @@ module.exports = {
             })
         })
     },
+    getUserGivenTag: function(tag) {
+        return new Promise((resolve, reject) => {
+            userDAO.getUserByTag(tag).then(doc => {
+                return resolve(doc);
+            }).catch(err => {
+                return reject(err);
+            })
+        })
+    },
     getDistinctTags: function() {
         return new Promise((resolve, reject) => {
             tagDAO.getDistinctTags().then(doc => {

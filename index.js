@@ -64,6 +64,15 @@ app.get('/getDistinctTags', function(req,res) {
   });
 })
 
+app.get('/getUserGivenTag', function(req,res) {
+  serverHelper.getUserGivenTag(req.query.tag).then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

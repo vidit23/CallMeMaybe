@@ -3,6 +3,13 @@ var passport = require('passport');
 var usersDAO = require('../model/usersDAO');
 var router = express.Router();
 
+function isAuthenticated(req,res,next){
+  if(req.user)
+     return next();
+  else
+     return res.redirect('/');
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index');
@@ -10,14 +17,6 @@ router.get('/', function(req, res, next) {
 
 router.get('/signup', function(req, res) {
   res.render('signup', { message: ''});
-});
-
-router.get('/dashboard', function(req, res, next) {
-  res.render('dashboard');
-});
-
-router.get('/video', function(req, res, next) {
-  res.render('video');
 });
 
 router.post('/signup', function(req, res) {
@@ -45,6 +44,14 @@ router.post('/login', passport.authenticate('local', {
 router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
+});
+
+router.get('/dashboard', isAuthenticated, function(req, res, next) {
+  res.render('dashboard', {user: req.user});
+});
+
+router.get('/video', isAuthenticated,function(req, res, next) {
+  res.render('video');
 });
 
 router.get('/ping', function(req, res){

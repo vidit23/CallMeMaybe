@@ -37,42 +37,6 @@ passport.use(new LocalStrategy(UsersDAO.userFunctions.authenticate()));
 passport.serializeUser(UsersDAO.userFunctions.serializeUser());
 passport.deserializeUser(UsersDAO.userFunctions.deserializeUser());
 
-app.get('/getUser', function(req,res) {
-  serverHelper.getUser(req.query.name).then((response) => {
-    res.status(200).send(response);
-  }).catch(err => {
-    console.log('Error', err);
-    res.status(500).send('Something broke');
-  });
-})
-
-app.post('/addTag', function(req,res) {
-  serverHelper.addTag(req.body.name).then((response) => {
-    res.status(200).send(response);
-  }).catch(err => {
-    console.log('Error', err);
-    res.status(500).send('Something broke');
-  });
-})
-
-app.get('/getDistinctTags', function(req,res) {
-  serverHelper.getDistinctTags().then((response) => {
-    res.status(200).send(response);
-  }).catch(err => {
-    console.log('Error', err);
-    res.status(500).send('Something broke');
-  });
-})
-
-app.get('/getUserGivenTag', function(req,res) {
-  serverHelper.getUserGivenTag(req.query.tag).then((response) => {
-    res.status(200).send(response);
-  }).catch(err => {
-    console.log('Error', err);
-    res.status(500).send('Something broke');
-  });
-})
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

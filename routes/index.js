@@ -97,7 +97,11 @@ router.get('/getUser', function (req, res) {
         console.log('Error', err);
         res.status(500).send('Something broke');
     });
-})
+});
+
+router.get('/search', isAuthenticated,function(req, res, next) {
+    res.render('search');
+});
 
 router.post('/addTag', isAuthenticated, function (req, res) {
     serverHelper.addTag(req.body.name).then((response) => {

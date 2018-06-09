@@ -109,7 +109,7 @@ router.post('/addTag', isAuthenticated, function (req, res) {
 
 router.post('/matchIsHelp', isAuthenticated, function (req, res) {
     let param = req.body;
-    serverHelper.matchIsHelp(param.giver, param.receiver, param.whoCalled, param.isHelp).then((response) => {
+    serverHelper.matchIsHelp(param.giver, param.receiver, param.calledWho, param.isHelp).then((response) => {
         res.status(200).send(response);
     }).catch(err => {
         console.log('Error', err);

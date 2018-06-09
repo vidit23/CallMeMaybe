@@ -38,7 +38,25 @@ passport.serializeUser(UsersDAO.userFunctions.serializeUser());
 passport.deserializeUser(UsersDAO.userFunctions.deserializeUser());
 
 app.get('/getUser', function(req,res) {
-  serverHelper.getUser().then((response) => {
+  serverHelper.getUser(req.query.name).then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
+
+app.post('/addTag', function(req,res) {
+  serverHelper.addTag(req.body.name).then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
+
+app.get('/getDistinctTags', function(req,res) {
+  serverHelper.getDistinctTags().then((response) => {
     res.status(200).send(response);
   }).catch(err => {
     console.log('Error', err);

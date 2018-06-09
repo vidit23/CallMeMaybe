@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
 var userSchema = new Schema({
-    _id     : { type: String, default: mongoose.Types.ObjectId().toString()},
+    // _id     : { type: String, default: function() {return new }},
     ranking : { type: Number, default: 1},
     isActive: { type: Boolean, default: false},
     age     : { type: Number, default: 21},

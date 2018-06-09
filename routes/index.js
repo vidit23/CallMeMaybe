@@ -12,6 +12,10 @@ router.get('/signup', function(req, res) {
   res.render('signup', { message: ''});
 });
 
+router.get('/dashboard', function(req, res, next) {
+  res.render('dashboard');
+});
+
 router.post('/signup', function(req, res) {
   usersDAO.userFunctions.register(new usersDAO.userFunctions({ username : req.body.username }), req.body.password, function(err, user) {
       if (err) {
@@ -30,7 +34,7 @@ router.get('/login', function(req, res) {
 });
 
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/dashboard',
   failureRedirect: '/login'
   }));
 

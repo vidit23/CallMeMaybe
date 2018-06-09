@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var config = require('../config/config');
+var passportLocalMongoose = require('passport-local-mongoose');
 
 var userSchema = new Schema({
-    _id     : { type: String, default: ''},
+    _id     : { type: String, default: mongoose.Types.ObjectId().toString()},
     ranking : { type: Number, default: 1},
     isActive: { type: Boolean, default: false},
     age     : { type: Number, default: 21},
@@ -15,11 +15,14 @@ var userSchema = new Schema({
     about   : { type: String, default: ''},
     registered: { type: Date, default: Date.now},
 });
-// var uri = 'mongodb://' + config.dbConfig.host + ':' + config.dbConfig.port + '/' + config.dbConfig.dbName;
-// mongoose.connect(uri);
+
+userSchema.plugin(passportLocalMongoose);
+
 var User = mongoose.model('usersDAO', userSchema, 'usersDAO');
 
 module.exports = {
+    userFunctions: User,
+
     getUserById: function(id) {
         return new Promise((resolve, reject) => {
             User.find({_id: id}).then(result => {

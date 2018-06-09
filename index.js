@@ -1,6 +1,8 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var serverHelper = require('./server/serverhelper');
@@ -18,10 +20,22 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+var UsersDAO = require('./model/usersDAO');
+passport.use(new LocalStrategy(UsersDAO.userFunctions.authenticate()));
+passport.serializeUser(UsersDAO.userFunctions.serializeUser());
+passport.deserializeUser(UsersDAO.userFunctions.deserializeUser());
 
 app.get('/getUser', function(req,res) {
   serverHelper.getUser().then((response) => {

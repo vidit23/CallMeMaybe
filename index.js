@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var serverHelper = require('./server/serverhelper');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -21,6 +22,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+app.get('/getUser', function(req,res) {
+  serverHelper.getUser().then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

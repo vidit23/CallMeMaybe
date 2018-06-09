@@ -15,7 +15,6 @@ var userSchema = new Schema({
     about   : { type: String, default: ''},
     registered: { type: Date, default: Date.now},
 });
-
 userSchema.plugin(passportLocalMongoose);
 
 var User = mongoose.model('usersDAO', userSchema, 'usersDAO');
@@ -23,23 +22,35 @@ var User = mongoose.model('usersDAO', userSchema, 'usersDAO');
 module.exports = {
     userFunctions: User,
 
-    getUserById: function(id) {
+    getUserById: function (id) {
         return new Promise((resolve, reject) => {
-            User.find({_id: id}).then(result => {
+            User.find({ _id: id }).then(result => {
+                return resolve(result);
+            }).catch(err => {
+                return reject(err);
+            });
+        });
+    },
+
+    getUserByTag: function (tag) {
+        return new Promise((resolve, reject) => {
+            User.find({ tags: tag }).then(result => {
                 return resolve(result);
             }).catch(err => {
                 return reject(err);
             })
         });
     },
-    getUserByTag: function(tag) {
+    updateUserByName: function (username, updateField, updateValue) {
         return new Promise((resolve, reject) => {
-            User.find({tags: tag}).then(result => {
+            let query = {};
+            query[updateField] = updateValue;
+            User.findOneAndUpdate({ username: username }, query).then(result => {
                 return resolve(result);
             }).catch(err => {
                 return reject(err);
             })
         });
-    }
+    },
 
 }

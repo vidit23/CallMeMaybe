@@ -8,19 +8,15 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
-router.get('/signup', function(req, res, next) {
-  res.render('signup');
+router.get('/signup', function(req, res) {
+  res.render('signup', { message: ''});
 });
 
-router.get('/register', function(req, res) {
-  res.render('register', { });
-});
-
-router.post('/register', function(req, res) {
+router.post('/signup', function(req, res) {
   usersDAO.userFunctions.register(new usersDAO.userFunctions({ username : req.body.username }), req.body.password, function(err, user) {
       if (err) {
           console.log('ERROR', err);
-          return res.render('register', { user : user });
+          return res.render('signup', { message : 'UserName is already registered'});
       }
 
       passport.authenticate('local')(req, res, function () {
@@ -33,9 +29,10 @@ router.get('/login', function(req, res) {
   res.render('login', { user : req.user });
 });
 
-router.post('/login', passport.authenticate('local'), function(req, res) {
-  res.redirect('/');
-});
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+  }));
 
 router.get('/logout', function(req, res) {
   req.logout();

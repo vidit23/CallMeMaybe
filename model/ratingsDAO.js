@@ -5,7 +5,7 @@ var ratingSchema = new Schema({
     // _id     : { type: String, default: function() {return new }},
     giver : { type: String, default: ''},
     receiver : { type: String, default: ''},
-    whoCalled : { type: String, default: ''},
+    calledWho : { type: String, default: ''},
     isHelp : {type: Boolean, default: false},
     lastModified: { type: Date, default: Date.now},
 });
@@ -13,9 +13,9 @@ var ratingSchema = new Schema({
 var Ratings = mongoose.model('ratingsDAO', ratingSchema, 'ratingsDAO');
 
 module.exports = {
-    getRatingLatest: function(giver, receiver, whoCalled) {
+    getRatingLatest: function(giver, receiver, calledWho) {
         return new Promise((resolve, reject) => {
-            Ratings.find({giver: giver, receiver: receiver, whoCalled: whoCalled}).sort({lastModified: -1})
+            Ratings.find({giver: giver, receiver: receiver, calledWho: calledWho}).sort({lastModified: -1})
             .then(result => {
                 if(result.length === 0) {
                     return resolve([]);
@@ -36,11 +36,11 @@ module.exports = {
             })
         });
     },
-    updateRating: function(giver, receiver, whoCalled, isHelp) {
+    updateRating: function(giver, receiver, calledWho, isHelp) {
         return new Promise((resolve, reject) => {
             let ratingObj = { giver: giver, receiver: receiver, 
-                whoCalled: whoCalled, lastModified: Date.now(), isHelp: isHelp };
-            Ratings.findOneAndUpdate({giver: giver, receiver: receiver, whoCalled: whoCalled}, 
+                calledWho: calledWho, lastModified: Date.now(), isHelp: isHelp };
+            Ratings.findOneAndUpdate({giver: giver, receiver: receiver, calledWho: calledWho}, 
                 ratingObj, {upsert: true}).then(result => {
                 return resolve(result);
             }).catch(err => {

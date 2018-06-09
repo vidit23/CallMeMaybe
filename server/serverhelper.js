@@ -2,7 +2,7 @@ const userDAO = require('../model/usersDAO');
 const tagDAO = require('../model/tagsDAO');
 const ratingDAO = require('../model/ratingsDAO');
 
-function getUserHigherRating(giver, receiver, whoCalled) {
+function getUserHigherRating(giver, receiver, calledWho) {
     return new Promise((resolve, reject) => {
         let num;
         userDAO.getUserByUserName(giver).then(result => {
@@ -14,7 +14,7 @@ function getUserHigherRating(giver, receiver, whoCalled) {
             } else if (num < doc.ranking) {
                 return resolve(receiver);
             } else {
-                return resolve(whoCalled);
+                return resolve(calledWho);
             }
         }).catch(err => {
             console.log('getUserHigherRating ', err);
@@ -82,15 +82,15 @@ module.exports = {
             });
         });
     },
-    matchIsHelp: function (giver, receiver, whoCalled, isHelp) {
+    matchIsHelp: function (giver, receiver, calledWho, isHelp) {
         return new Promise((resolve, reject) => {
             console.log('match isHelp ', receiver);
             let exists = false, isMatch = false, daoIsHelp;
-            return ratingDAO.getRatingLatest(receiver, giver, whoCalled).then(result => {
+            return ratingDAO.getRatingLatest(receiver, giver, calledWho).then(result => {
                 if(result.length === 0) {
                     // If no previous record exist in ratingsDB, add to it
                     console.log('If no previous record exist in ratingsDB, add to it ');
-                    return ratingDAO.updateRating(giver, receiver, whoCalled, isHelp);
+                    return ratingDAO.updateRating(giver, receiver, calledWho, isHelp);
                 } else {
                     // If previous record exists, store it in memory and delete it from DB
                     exists = true;
@@ -108,7 +108,7 @@ module.exports = {
                     } else {
                         // find on with higher rating, reduce the other ones rating
                         console.log('find on with higher rating, reduce the other ones rating');
-                        return getUserHigherRating(giver, receiver, whoCalled);
+                        return getUserHigherRating(giver, receiver, calledWho);
                     }
                 } else {
                     // Nothing to do, return empty

@@ -43,11 +43,6 @@ router.get('/login', function (req, res) {
     res.render('login', { user: req.user });
 });
 
-// router.post('/login', passport.authenticate('local', {
-//     successRedirect: '/dashboard',
-//     failureRedirect: '/login'
-// }));
-
 router.post('/login', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err) {
@@ -110,7 +105,17 @@ router.post('/addTag', isAuthenticated, function (req, res) {
         console.log('Error', err);
         res.status(500).send('Something broke');
     });
-})
+});
+
+router.post('/matchIsHelp', isAuthenticated, function (req, res) {
+    let param = req.body;
+    serverHelper.matchIsHelp(param.giver, param.receiver, param.whoCalled, param.isHelp).then((response) => {
+        res.status(200).send(response);
+    }).catch(err => {
+        console.log('Error', err);
+        res.status(500).send('Something broke');
+    });
+});
 
 router.get('/getDistinctTags', isAuthenticated, function (req, res) {
     serverHelper.getDistinctTags().then((response) => {
@@ -119,7 +124,7 @@ router.get('/getDistinctTags', isAuthenticated, function (req, res) {
         console.log('Error', err);
         res.status(500).send('Something broke');
     });
-})
+});
 
 router.get('/getUserByTag', isAuthenticated, function (req, res) {
     serverHelper.getUserByTag(req.query.tag).then((response) => {
@@ -128,7 +133,7 @@ router.get('/getUserByTag', isAuthenticated, function (req, res) {
         console.log('Error', err);
         res.status(500).send('Something broke');
     });
-})
+});
 
 router.get('/ping', function (req, res) {
     res.status(200).send("pong!");

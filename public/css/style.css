@@ -1,0 +1,66 @@
+body{
+    font-family: Poppins,Arial,sans-serif;
+}
+
+.header {
+    padding:20px 0px;
+}
+
+.header .fa{
+    color:#08c2e8;
+}
+
+#masthead{
+    background: rgba(0, 0, 0, 0) url("../images/login-bg.jpg") no-repeat scroll center center / cover ;
+    display: table;
+    height: 600px;
+    position: relative;
+    width: 100%;
+}
+
+.easy-login{
+    padding: 90px 10px 180px;
+}
+
+.easy-login h2{
+    background: #08c2e8;
+    margin:0px;
+    padding: 20px;
+    color:#fff;
+}
+
+.easy-login .easy-body{
+    background-color: #fff;
+    padding:30px;
+}
+
+.easy-login .form-group  {
+    margin-bottom: 20px;
+}
+
+.login-btn {
+    background-color: #08c2e8;
+    border-color: #08c2e8;
+    color: #fff;
+}
+
+.btn-reset {
+    background-color: #fff;
+    border: 1px solid #08c2e8;
+    color: #08c2e8;
+}
+
+.social-login {
+    margin-top: 25px;
+}
+
+.btn-fb{
+    background: #4267b2 none repeat scroll 0 0 !important;
+    border-color: #4267b2 !important;
+    margin-top: 20px;
+    color: #fff
+}
+
+.footer {
+    padding:20px 0px;
+}

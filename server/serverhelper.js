@@ -85,7 +85,7 @@ module.exports = {
     matchIsHelp: function (giver, receiver, calledWho, isHelp) {
         return new Promise((resolve, reject) => {
             console.log('match isHelp ', receiver);
-            let exists = false, isMatch = false, daoIsHelp;
+            let exists = false, match = false, daoIsHelp;
             return ratingDAO.getRatingLatest(receiver, giver, calledWho).then(result => {
                 if(result.length === 0) {
                     // If no previous record exist in ratingsDB, add to it
@@ -102,9 +102,17 @@ module.exports = {
                 if (exists === true) {
                     if (daoIsHelp === isHelp) {
                         // add to both their ratings
+                        if(isHelp === true) {
+                            match = 1;
+                        } else {
+                            match = 0;
+                        }
                         console.log('add to both their ratings ');
-                        let promiseArr = [userDAO.addToUserRanking(giver, 1), userDAO.addToUserRanking(receiver, 1)];
-                        return Promise.all(promiseArr);
+                        let promiseArr = [userDAO.addToUserField(giver, 'ranking', 1), 
+                                        userDAO.addToUserField(receiver, 'ranking', 1),
+                                        userDAO.addToUserField(calledWho, 'solvedCases', match),
+                                    ];
+                        return Promise.all(promiseArr).then(() => {return userDAO.addToUserField(calledWho, 'totalCases', 1)});
                     } else {
                         // find on with higher rating, reduce the other ones rating
                         console.log('find on with higher rating, reduce the other ones rating');
@@ -117,11 +125,11 @@ module.exports = {
             }).then(doc => {
                 if (typeof doc === 'string' && doc === giver) {
                     console.log('giver is greater ');
-                    let promiseArr = [userDAO.addToUserRanking(giver, 1), userDAO.addToUserRanking(receiver, -1)];
+                    let promiseArr = [userDAO.addToUserField(giver, 'ranking', 1), userDAO.addToUserField(receiver, 'ranking', -1)];
                     return Promise.all(promiseArr);
                 } else if (typeof doc === 'string' && doc === receiver) {
                     console.log('receiver is greater ');
-                    let promiseArr = [userDAO.addToUserRanking(giver, -1), userDAO.addToUserRanking(receiver, 1)];
+                    let promiseArr = [userDAO.addToUserField(giver, 'ranking', -1), userDAO.addToUserField(receiver, 'ranking', 1)];
                     return Promise.all(promiseArr);
                 } else {
                     return;

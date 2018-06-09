@@ -5,6 +5,9 @@ var passportLocalMongoose = require('passport-local-mongoose');
 var userSchema = new Schema({
     // _id     : { type: String, default: function() {return new }},
     ranking : { type: Number, default: 50},
+    totalCases : { type: Number, default: 0},
+    solvedCases : { type: Number, default: 0},
+    rating : { type: Number, default: 0},
     isActive: { type: Boolean, default: false},
     age     : { type: Number, default: 21},
     name    : { type: String, default: 'Vidit'},
@@ -34,7 +37,7 @@ module.exports = {
 
     getUserByTag: function(tag, isActive) {
         return new Promise((resolve, reject) => {
-            User.find({tags: tag, isActive: isActive}).sort({ranking: -1}).then(result => {
+            User.find({tags: tag, isActive: isActive}).sort({rating: -1}).then(result => {
                 return resolve(result);
             }).catch(err => {
                 return reject(err);
@@ -52,10 +55,21 @@ module.exports = {
             });
         });
     },
-    addToUserRanking: function (username, val) {
+    addToUserField: function (username, updateField, updateValue) {
         return new Promise((resolve, reject) => {
-            User.findOneAndUpdate({ username: username }, {$inc: {ranking: val}}).then(result => {
-                return resolve(result);
+            let query = {};
+            let incQuery = {};
+            query[updateField] = updateValue;
+            incQuery['$inc'] = query;
+            User.findOne({ username: username }).then(result => {
+                if(result && result.totalCases && updateField==='totalCases') {
+                    let score = ((2 * result.solvedCases) - result.totalCases)/result.totalCases;
+                    incQuery['$set'] = {rating: score};
+                }
+                console.log('incQuery ', incQuery);
+                return User.findOneAndUpdate({ username: username }, incQuery);
+            }).then(doc => {
+                return resolve(doc);
             }).catch(err => {
                 return reject(err);
             });

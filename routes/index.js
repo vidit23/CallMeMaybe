@@ -16,6 +16,10 @@ router.get('/dashboard', function(req, res, next) {
   res.render('dashboard');
 });
 
+router.get('/video', function(req, res, next) {
+  res.render('video');
+});
+
 router.post('/signup', function(req, res) {
   usersDAO.userFunctions.register(new usersDAO.userFunctions({ username : req.body.username }), req.body.password, function(err, user) {
       if (err) {

@@ -13,7 +13,7 @@ function isAuthenticated(req, res, next) {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('index');
+    res.render('index', {user: req.user});
 });
 
 router.get('/signup', function (req, res) {
@@ -82,7 +82,7 @@ router.get('/dashboard', isAuthenticated, function (req, res, next) {
 });
 
 router.get('/video', isAuthenticated, function (req, res, next) {
-    res.render('video');
+    res.render('video', { user: req.user });
 });
 
 router.get('/getUser', function (req, res) {
@@ -95,7 +95,7 @@ router.get('/getUser', function (req, res) {
 });
 
 router.get('/search', isAuthenticated,function(req, res, next) {
-    res.render('search');
+    res.render('search', { user: req.user });
 });
 
 router.post('/addTag', isAuthenticated, function (req, res) {

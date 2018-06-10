@@ -78,10 +78,6 @@ router.get('/logout', function (req, res) {
     })
 });
 
-router.get('/dashboard', isAuthenticated, function (req, res, next) {
-    res.render('dashboard', { user: req.user });
-});
-
 router.get('/getUser', function (req, res) {
     serverHelper.getUser(req.query.name).then((response) => {
         res.status(200).send(response);

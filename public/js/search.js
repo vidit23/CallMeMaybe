@@ -44,19 +44,23 @@ $(function() {
             console.log(data)
             
             $('#tagstable').empty()
-            $temp='<thead class="thead-dark"><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Rank</th></tr></thead><tbody>'
+            $temp='<thead class="thead-dark"><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Rank</th><th scope="col">isActive</th><th scope="col">rating</th></tr></thead><tbody>'
             $('#tagstable').append( $temp)
             $.each(data, function(val, text) {
                 var $name=text['name']
                 var $email=text['email']
                 var $ranking=text['ranking']
+                var $isActive=text['isActive']
+                var $rating=text['rating']
                 console.log($name)
                 console.log($email)
                 console.log($ranking)
                 $temp='<tr id='+$email+'>'
                 $temp+='<td>'+$name+'</td>'
                 $temp+='<td>'+$email+'</td>'
-                $temp+='<td>'+$ranking+'</td></tr>'
+                $temp+='<td>'+$ranking+'</td>'
+                $temp+='<td>'+$isActive+'</td>'
+                $temp+='<td>'+$rating+'</td></tr>'
                 //$('#tagstable').append( $('<td></td>').val($email).html($email) )
                 //$('#tagstable').append( $('<td></td>').val($ranking).html($ranking) )
                 $('#tagstable').append( $temp)

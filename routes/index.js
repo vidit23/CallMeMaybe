@@ -135,9 +135,10 @@ router.get('/getUserByTag', isAuthenticated, function (req, res) {
     });
 });
 
-<<<<<<< HEAD
 router.get('/name', isAuthenticated, function(req, res, next) {
-  res.render('name', {giver: req.user, receiver: req.query.username});
+    serverHelper.getUser(req.query.username).then(result => {
+        res.render('name', {giver: req.user, receiver: result[0]})
+    });
 });
 
 router.get('/getUser', function(req,res) {
@@ -178,10 +179,6 @@ router.get('/getUserByTag', isAuthenticated, function(req,res) {
 
 router.get('/ping', function(req, res){
   res.status(200).send("pong!");
-=======
-router.get('/ping', function (req, res) {
-    res.status(200).send("pong!");
->>>>>>> master
 });
 
 

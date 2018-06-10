@@ -5,10 +5,35 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 <script src="/js/AgoraRTCSDK-2.3.1.js"></script>
 <script src="/js/jquery.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="/css/name.css" rel="stylesheet">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 
 <body>
-<div id="div_device" class="panel panel-default">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/search">Search <span class="sr-only">(current)</span></a>
+      </li>
+			 <li class="nav-item active">
+        <a class="nav-link" >{{giver.username}} <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    
+      <button class="btn btn-outline-success my-2 my-sm-0"  id='logout' name='logout'>Logout</button>
+   
+  </div>
+</nav>
+
+<div style='visibility: hidden;' id="div_device" class="panel panel-default">
 <div class="select">
 <label for="audioSource">Audio source: </label><select id="audioSource"></select>
 </div>
@@ -19,14 +44,18 @@
 
 <div id="div_join" class="panel panel-default">
 <div class="panel-body">
-Key: <input id="key" type="text" value="" size="36"></input>
-Channel: <input id="channel" type="text" value="1000" size="4"></input>
-Host: <input id="video" type="checkbox" checked></input>
+<input id="key" type="text" style='visibility: hidden;' value={{appId}} size="36"></input>
+<input id="channel" type="text" style='visibility: hidden;' value={{receiver.channelno}} size="4"></input>
+You are connecting to:<input type='text' value={{receiver.username}}> </input>
+<input id="video" style='visibility: hidden;' type="checkbox" checked></input>
 <button id="join" class="btn btn-primary" onclick="join()">Join</button>
 <button id="leave" class="btn btn-primary" onclick="leave()">Leave</button>
-<button id="publish" class="btn btn-primary" onclick="publish()">Publish</button>
-<button id="unpublish" class="btn btn-primary" onclick="unpublish()">Unpublish</button>
+<button id="publish" class="btn btn-primary" style='visibility: hidden;' onclick="publish()">Publish</button>
+<button id="unpublish" class="btn btn-primary" style='visibility: hidden;' onclick="unpublish()">Unpublish</button>
+
+
 </div>
+
 </div>
 
     <!--style>
@@ -178,6 +207,7 @@ function leave() {
   document.getElementById("leave").disabled = true;
   client.leave(function () {
     console.log("Leavel channel successfully");
+    location.reload();
   }, function (err) {
     console.log("Leave channel failed");
   });

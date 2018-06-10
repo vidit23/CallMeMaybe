@@ -29,12 +29,12 @@ $(function() {
     $('#tagstable').on('click', 'tr', function(){
         console.log( $(this).context.id)
         $v=$(this).context.id
-        $.get("/name",
+        $.get("/video",
         {
           username: $(this).context.id
         },
         function(data,status){
-            window.location.replace('/name?username='+ $v)
+            window.location.replace('/video?username='+ $v)
             console.log("Data: " + data + "\nStatus: " + status);
         });        
     });

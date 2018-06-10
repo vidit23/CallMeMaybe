@@ -23,8 +23,8 @@
       <li class="nav-item active">
         <a class="nav-link" href="/search">Search <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
-        {{user}} <span class="sr-only">(current)</span>
+			 <li class="nav-item active">
+        <a class="nav-link" >{{giver.username}} <span class="sr-only">(current)</span></a>
       </li>
     </ul>
     
@@ -34,7 +34,6 @@
 </nav>
 
 <div class="container">
-    {{giver.username}}
     <div class="row profile">
 		<div class="col-md-3">
 			<div class="profile-sidebar">
@@ -46,7 +45,7 @@
 				<!-- SIDEBAR USER TITLE -->
 				<div class="profile-usertitle">
 					<div class="profile-usertitle-name" id="name" name="name">
-					{{receiver}}
+					{{receiver.username}}
 					</div>
 					<div class="profile-usertitle-job" id="tag" name="tag">
 						

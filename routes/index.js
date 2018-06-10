@@ -2,6 +2,7 @@ var express = require('express');
 var passport = require('passport');
 var usersDAO = require('../model/usersDAO');
 var router = express.Router();
+var config = require('../config/config');
 var serverHelper = require('../server/serverhelper');
 
 function isAuthenticated(req, res, next) {
@@ -31,7 +32,7 @@ router.post('/signup', function (req, res) {
 
         passport.authenticate('local')(req, res, function () {
             serverHelper.updateUserByName(req.body.username, 'isActive', true).then(() => {
-                res.redirect('/dashboard');
+                res.redirect('/search');
             }).catch(() => {
                 res.redirect('/login');
             });
@@ -57,7 +58,7 @@ router.post('/login', function (req, res, next) {
             }
             serverHelper.updateUserByName(req.body.username, 'isActive', true).then(() => {
                 console.log('update', req.body.username);
-                return res.redirect('/dashboard');
+                return res.redirect('/search');
             }).catch(() => {
                 return res.redirect('/login');
             });
@@ -79,10 +80,6 @@ router.get('/logout', function (req, res) {
 
 router.get('/dashboard', isAuthenticated, function (req, res, next) {
     res.render('dashboard', { user: req.user });
-});
-
-router.get('/video', isAuthenticated, function (req, res, next) {
-    res.render('video', { user: req.user });
 });
 
 router.get('/getUser', function (req, res) {
@@ -135,9 +132,15 @@ router.get('/getUserByTag', isAuthenticated, function (req, res) {
     });
 });
 
-router.get('/name', isAuthenticated, function(req, res, next) {
+// router.get('/name', isAuthenticated, function(req, res, next) {
+//     serverHelper.getUser(req.query.username).then(result => {
+//         res.render('name', {giver: req.user, receiver: result[0]})
+//     });
+// });
+
+router.get('/video', isAuthenticated, function (req, res, next) {
     serverHelper.getUser(req.query.username).then(result => {
-        res.render('name', {giver: req.user, receiver: result[0]})
+        res.render('video', {giver: req.user, receiver: result[0], appId: config.APIKey });
     });
 });
 

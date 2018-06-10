@@ -60,6 +60,10 @@ router.get('/search', isAuthenticated,function(req, res, next) {
   res.render('search');
 });
 
+router.get('/name', isAuthenticated, function(req, res, next) {
+  res.render('name', {giver: req.user, receiver: req.query.username});
+});
+
 router.get('/getUser', function(req,res) {
   serverHelper.getUser(req.query.name).then((response) => {
     res.status(200).send(response);

@@ -135,8 +135,53 @@ router.get('/getUserByTag', isAuthenticated, function (req, res) {
     });
 });
 
+<<<<<<< HEAD
+router.get('/name', isAuthenticated, function(req, res, next) {
+  res.render('name', {giver: req.user, receiver: req.query.username});
+});
+
+router.get('/getUser', function(req,res) {
+  serverHelper.getUser(req.query.name).then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
+
+router.post('/addTag', isAuthenticated, function(req,res) {
+  serverHelper.addTag(req.body.name).then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
+
+router.get('/getDistinctTags', isAuthenticated, function(req,res) {
+  serverHelper.getDistinctTags().then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
+
+router.get('/getUserByTag', isAuthenticated, function(req,res) {
+  serverHelper.getUserByTag(req.query.tag).then((response) => {
+    res.status(200).send(response);
+  }).catch(err => {
+    console.log('Error', err);
+    res.status(500).send('Something broke');
+  });
+})
+
+router.get('/ping', function(req, res){
+  res.status(200).send("pong!");
+=======
 router.get('/ping', function (req, res) {
     res.status(200).send("pong!");
+>>>>>>> master
 });
 
 
